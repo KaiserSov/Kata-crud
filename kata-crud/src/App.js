@@ -79,16 +79,16 @@ const List = () => {
   useEffect(() => {
     fetch(HOST_API+"/todos")//Promesa
     .then(response => response.json())
-    .then((list) => {
-      dispatch({type: "update-list", list})
+    .then((List) => {
+      dispatch({type: "update-list", List})
     })
-  }, [state.list.length, dispatch]);
+  }, [state.List.length, dispatch]);
 
   const onDelete = (id) => {
     fetch(HOST_API + "/"+id+"/todo",{
       method: "DELETE"
     })
-    .then((list) => {
+    .then((List) => {
       dispatch({ type: "delete-item", id})
     })
   };
@@ -107,7 +107,7 @@ const List = () => {
       </tr>
     </thead>
     <tbody>
-      {this.list.map((todo) => {
+      {this.List.map((todo) => {
         return <tr key={todo.id}>
           <td>{todo.id}</td>
           <td>{todo.name}</td>
@@ -127,7 +127,7 @@ function reducer(state, action) {
   switch (action, type) {
     case 'update-item':
 
-    const listUpdateEdit = state.list.map((item) => {
+    const listUpdateEdit = state.List.map((item) => {
       if(item.id === action.item.id){
         return action.item;
       }
@@ -136,18 +136,18 @@ function reducer(state, action) {
     return { ...state, List: listUpdateEdit, item: {}}
 
     case 'delete-item':
-      const listUpdate = state.list.filter((item) => {
+      const listUpdate = state.List.filter((item) => {
         return item.id !== action.id;
       });
       return { ...state, List: listUpdate }
     case 'update-list':
-      return { ...state, list: action.list}
+      return { ...state, List: action.List}
     case 'edit-item':
-        return { ...state, item: action.list}
+        return { ...state, item: action.List}
     case 'add-item':
-      const newList = state.list;
+      const newList = state.List;
       newList.push(action.item);
-      return { ...state, list: newList }
+      return { ...state, List: newList }
     default:
       return state;  
   }
@@ -163,8 +163,7 @@ const StoreProvider = ({ children }) => {
 }
 
 function App() {
-  return 
-  <StoreProvider>
+  return <StoreProvider>
     <Form />
     <List />
   </StoreProvider>
